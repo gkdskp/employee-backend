@@ -13,9 +13,9 @@ export class EmployeeRespository {
     return newEmployee.save();
   }
 
-  updateEmployee(data: { [key: string]: any }) {
+  updateEmployee(id: string, updatedEmployee: Employee) {
     const employeeRepo = getConnection().getRepository(Employee);
-    return employeeRepo.update({ id: data.id }, data);
+    return employeeRepo.update({ id}, updatedEmployee);
   }
 
   getEmployeeById(id: string) {

@@ -17,7 +17,7 @@ const authorize = (permittedRoles?: string[]) => {
             const data: any = jsonwebtoken.decode(token);
             const userRole: string = data['custom:role'];
 
-            if(! permittedRoles.includes(userRole)) {
+            if(permittedRoles && !permittedRoles.includes(userRole)) {
                 return next(new UserNotAuthorizedException());
             }
             

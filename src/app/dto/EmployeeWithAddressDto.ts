@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsString, IsAlpha, IsDateString, IsEnum, IsInt, ValidateNested, IsDate, IsDefined } from "class-validator";
+import { IsString, IsEnum, IsInt, ValidateNested, IsDate, IsDefined } from "class-validator";
 import { EmployeeRole, Status } from "../util/enums";
 import AddressDto from "./AddressDto";
 
@@ -7,7 +7,7 @@ export default class EmployeeWithAddressDto {
     @IsString()
     public id: string;
 
-    @IsAlpha()
+    @IsString()
     public name: string;
 
     @IsString()

@@ -10,8 +10,8 @@ import { ErrorCodes } from "../util/errorCode";
 export class DepartmentService {
     constructor(private departmentRepo: DepartmentRepository) { }
 
-    async getAllDepartments() {
-        return await this.departmentRepo.getAllDepartments();
+    getAllDepartments() {
+        return this.departmentRepo.getAllDepartments();
     }
 
     async createDepartment(departmentData: CreateDepartmentDto) {

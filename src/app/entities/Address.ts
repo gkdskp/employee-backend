@@ -10,11 +10,11 @@ export class Address extends AbstractEntity {
     public zip: Number;
 
     @Column({ nullable: false })
-    public city: String;
+    public city: string;
 
     @Column({ nullable: false })
-    public district: String;
+    public district: string;
 
     @Column({ nullable: false })
-    public state: String;
+    public state: string;
 }

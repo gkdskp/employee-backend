@@ -5,6 +5,8 @@ import APP_CONSTANTS from "../constants";
 import { DepartmentService } from "../service/DepartmentService";
 import authorize from "../middleware/authenticationMiddleware";
 import { EmployeeRole } from "../util/enums";
+import validationMiddleware from "../middleware/validationMiddleware";
+import CreateDepartmentDto from "../dto/CreateDepartmentDto";
 
 class DepartmentController extends AbstractController {
   constructor(private departmentService: DepartmentService) {
@@ -13,11 +15,16 @@ class DepartmentController extends AbstractController {
   }
 
   protected initializeRoutes() {
-    this.router.get(`${this.path}`, this.asyncRouteHandler(this.getAllDepartments));
+    this.router.get(
+      `${this.path}`, 
+      authorize(),
+      this.asyncRouteHandler(this.getAllDepartments)
+    );
     
     this.router.post(
       `${this.path}`, 
       authorize([EmployeeRole.Admin, EmployeeRole.HR]),
+      validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body),
       this.asyncRouteHandler(this.createDepartment)
     );
     
@@ -28,7 +35,11 @@ class DepartmentController extends AbstractController {
     );
   }
 
-  private getAllDepartments = async (request: RequestWithUser, response: Response, next: NextFunction) => {
+  private getAllDepartments = async (
+    request: RequestWithUser, 
+    response: Response, 
+    next: NextFunction
+  ) => {
     const departments = await this.departmentService.getAllDepartments();
 
     response.status(200);
@@ -40,7 +51,11 @@ class DepartmentController extends AbstractController {
     ));
   }
 
-  private createDepartment = async (request: RequestWithUser, response: Response, next: NextFunction) => {
+  private createDepartment = async (
+    request: RequestWithUser, 
+    response: Response, 
+    next: NextFunction
+  ) => {
     const departmentData = request.body;
     const newDepartment = await this.departmentService.createDepartment(departmentData);
 
@@ -53,7 +68,11 @@ class DepartmentController extends AbstractController {
     ));
   }
 
-  private deleteDepartment = async (request: RequestWithUser, response: Response, next: NextFunction) => {
+  private deleteDepartment = async (
+    request: RequestWithUser, 
+    response: Response, 
+    next: NextFunction
+  ) => {
     const { id } = request.params;
     await this.departmentService.deleteDepartment(id);
 

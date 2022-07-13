@@ -9,19 +9,23 @@ import EntityAlreadyExists from "../exception/EntityAlreadyExists";
 import jsonwebtoken from "jsonwebtoken";
 import UserNotAuthorizedException from "../exception/UserNotAuthorizedException";
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
+import InternalServerError from "../exception/InternalServerError";
+import { AddressService } from "./AddressService";
+import AddressDto from "../dto/AddressDto";
+import EditEmployeeDto from "../dto/EditEmployeeDto";
 
 export class EmployeeService {
     constructor(
-        private employeeRepo: EmployeeRespository
+        private employeeRepo: EmployeeRespository,
+        private addressService: AddressService
     ) { }
 
     public employeeLogin = async (
         name: string,
         password: string
     ) => {
-        const employeeDetails = await this.employeeRepo.getEmployeeByName(
-            name
-        );
+        const employeeDetails = 
+            await this.employeeRepo.getEmployeeByName(name);
         if (!employeeDetails) {
             throw new UserNotAuthorizedException();
         }
@@ -80,9 +84,21 @@ export class EmployeeService {
         return this.employeeRepo.addEmployee(newEmployee);
     }
 
-    async updateEmployee(data: { [key: string]: any }) {
-        const addressId = await this.employeeRepo.getEmployeeAddressId(data.id);
-        // return this.employeeRepo.updateEmployee(this.createEmployee(data));
+    async updateEmployee(id: string, data: EditEmployeeDto) {
+        const employee = await this.employeeRepo.getEmployeeById(id);
+
+        if (!employee) {
+            throw new EntityNotFoundException(ErrorCodes.USER_NOT_FOUND);
+        }
+
+        const updatedEmployee = plainToClass(Employee, data);
+        const updateResult = await this.employeeRepo.updateEmployee(id, updatedEmployee);
+
+        if(! updateResult.affected) {
+            throw new InternalServerError();
+        }
+
+        return updateResult;
     }
 
     async getEmployeeById(id: string) {
@@ -95,7 +111,31 @@ export class EmployeeService {
         return employee;
     }
 
-    deleteEmployee(id: string) {
-        return this.employeeRepo.deleteEmployee(id);
+    async deleteEmployee(id: string) {
+        const employee = await this.employeeRepo.getEmployeeById(id);
+        if(! employee) {
+            throw new EntityNotFoundException(ErrorCodes.USER_WITH_ID_NOT_FOUND);
+        }
+
+        const deleteResult = await this.employeeRepo.deleteEmployee(id);
+        if(! deleteResult.affected) {
+            throw new InternalServerError();
+        }
+
+        return deleteResult;
+    }
+
+    async updateAddress(id: string, addressData: AddressDto) {
+        const employee = await this.employeeRepo.getEmployeeById(id);
+        if(! employee) {
+            throw new EntityNotFoundException(ErrorCodes.USER_WITH_ID_NOT_FOUND);
+        }
+
+        const address = await this.addressService.createAddress(addressData);
+        await this.updateEmployee(id, {
+            address
+        });
+
+        return address;
     }
 }
