@@ -8,9 +8,11 @@ class HealthController extends AbstractController {
     super(`${APP_CONSTANTS.apiPrefix}/health`);
     this.initializeRoutes();
   }
+
   protected initializeRoutes() {
     this.router.get(`${this.path}`, this.healthResponse);
   }
+  
   private healthResponse = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
       const data: any = { message: "Service Up"};

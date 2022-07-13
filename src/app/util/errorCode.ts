@@ -14,9 +14,25 @@ export const ErrorCodes: { [key: string]: CustomError } = {
         CODE: "USER_WITH_ID_NOT_FOUND",
         MESSAGE: "User with given id not found",
     },
+    DEPARTMENT_WITH_ID_NOT_FOUND: {
+        CODE: "DEPARTMENT_WITH_ID_NOT_FOUND",
+        MESSAGE: "Department with given id not found",
+    },
     VALIDATION_ERROR: {
         CODE: "VALIDATION_ERROR",
         MESSAGE: "Validation failed error",
+    },
+    USER_ALREADY_EXISTS: {
+        CODE: "USER_ALREADY_EXISTS",
+        MESSAGE: "User with given id already exists"
+    },
+    DEPARTMENT_ALREADY_EXISTS: {
+        CODE: "DEPARTMENT_ALREADY_EXISTS",
+        MESSAGE: "Department with given name already exists"
+    },
+    UNEXPECTED_ERROR_OCCURED: {
+        CODE: "UNEXPECTED_ERROR_OCCURED",
+        MESSAGE: "Unexpected error occured"
     }
 };
 

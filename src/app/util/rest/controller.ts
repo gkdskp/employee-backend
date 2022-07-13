@@ -30,7 +30,6 @@ export abstract class AbstractController implements Controller {
    * @param  {Response}   res
    */
   protected asyncRouteHandler = (fn: (arg0: RequestWithUser, arg1: Response, arg2: NextFunction) => void) => {
-
     return async (
       req: RequestWithUser,
       res: Response,
@@ -44,5 +43,4 @@ export abstract class AbstractController implements Controller {
       }
     };
   }
-
 }
