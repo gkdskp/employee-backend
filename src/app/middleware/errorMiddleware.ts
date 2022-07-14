@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Formatter } from "../util/formatter";
 import HttpException from "../exception/HttpException";
+import { ErrorCodes } from "../util/errorCode";
 
 const fmt: Formatter = new Formatter();
 
@@ -11,10 +12,17 @@ const fmt: Formatter = new Formatter();
  * @param response
  * @param next
  */
-const errorMiddleware = (error: HttpException, request: Request, response: Response, next: NextFunction) => {
+const errorMiddleware = (
+  error: HttpException, 
+  request: Request, 
+  response: Response, 
+  next: NextFunction
+) => {
+  const defaultError = ErrorCodes.UNEXPECTED_ERROR_OCCURED;
+
   const status = error.status || 500;
-  const message = error.message || "Something went wrong";
-  const errorCode = error.errorCode || "ERROR_CODE_NOT_FOUND";
+  const message = error.message || defaultError.MESSAGE;
+  const errorCode = error.errorCode || defaultError.CODE;
   const validationErrors = error.validationErrors;
   response
     .status(status)

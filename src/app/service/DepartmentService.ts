@@ -41,4 +41,26 @@ export class DepartmentService {
 
         return deleteResult;
     }
+
+    async editDepartment(id: string, departmentData: CreateDepartmentDto) {
+        const department = await this.departmentRepo.getDepartmentById(id);
+        if(! department) {
+            throw new EntityNotFoundException(ErrorCodes.DEPARTMENT_WITH_ID_NOT_FOUND);
+        }
+
+        const conflictingDepartment =
+            await this.departmentRepo.getDepartmentByName(departmentData.name, true);
+        if (conflictingDepartment) {
+            throw new EntityAlreadyExists(ErrorCodes.DEPARTMENT_ALREADY_EXISTS);
+        }
+
+        const newDepartment = plainToClass(Department, departmentData);
+        const updateResult = await this.departmentRepo.editDepartment(id, newDepartment);
+
+        if(! updateResult.affected) {
+            throw new InternalServerError();
+        }
+
+        return updateResult;
+    }
 }

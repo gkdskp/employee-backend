@@ -27,4 +27,9 @@ export class DepartmentRepository {
     const departmentRepo = getConnection().getRepository(Department);
     return departmentRepo.findOne({ where: { name }, withDeleted });
   }
+
+  editDepartment(id: string, department: Department) {
+    const departmentRepo = getConnection().getRepository(Department);
+    return departmentRepo.update({ id }, department);
+  }
 }

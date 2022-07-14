@@ -27,6 +27,13 @@ class DepartmentController extends AbstractController {
       validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body),
       this.asyncRouteHandler(this.createDepartment)
     );
+
+    this.router.put(
+      `${this.path}/:id`,
+      authorize([EmployeeRole.Admin, EmployeeRole.HR]),
+      validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body),
+      this.asyncRouteHandler(this.editDepartment)
+    );
     
     this.router.delete(
       `${this.path}/:id`,
@@ -62,6 +69,24 @@ class DepartmentController extends AbstractController {
     response.status(200);
     response.send(this.fmt.formatResponse(
       newDepartment,
+      Date.now() - request.startTime,
+      "OK",
+      1
+    ));
+  }
+
+  private editDepartment = async(
+    request: RequestWithUser, 
+    response: Response, 
+    next: NextFunction
+  ) => {
+    const { id } = request.params;
+    const departmentData = request.body;
+    await this.departmentService.editDepartment(id, departmentData);
+
+    response.status(200);
+    response.send(this.fmt.formatResponse(
+      null,
       Date.now() - request.startTime,
       "OK",
       1

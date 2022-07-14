@@ -3,9 +3,12 @@ import UserNotAuthorizedException from "../exception/UserNotAuthorizedException"
 import RequestWithUser from "../util/rest/request";
 import jsonwebtoken from "jsonwebtoken";
 import APP_CONSTANTS from "../constants";
-import { EmployeeRole } from "../util/enums";
 
-
+/**
+ * Middleware for authorising user and user role
+ * @param permittedRoles roles permitted to access the route
+ * @returns middleware function
+ */
 const authorize = (permittedRoles?: string[]) => {
     return async (
         req: RequestWithUser,

@@ -38,7 +38,7 @@ export class Employee extends AbstractEntity {
     @JoinColumn()
     address: Address;
 
-    @Column()
+    @Column({ nullable: true })
     idProofPath: string;
 
     @Column({ nullable: false })
