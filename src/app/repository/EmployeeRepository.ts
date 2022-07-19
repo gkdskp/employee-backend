@@ -4,7 +4,7 @@ import { Employee } from "../entities/Employee";
 export class EmployeeRespository {
   getAllEmployees() {
     const employeeRepo = getConnection().getRepository(Employee);
-    return employeeRepo.find({ relations: ['department', 'address'] });
+    return employeeRepo.find({ relations: ['department'] });
   }
 
   addEmployee(employee: Employee) {
@@ -20,7 +20,7 @@ export class EmployeeRespository {
 
   getEmployeeById(id: string) {
     const employeeRepo = getConnection().getRepository(Employee);
-    return employeeRepo.findOne(id, { relations: ['department', 'address'] });
+    return employeeRepo.findOne(id, { relations: ['department'] });
   }
 
   deleteEmployee(id: string) {

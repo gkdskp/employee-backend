@@ -20,7 +20,7 @@ export class EmployeeService {
         private addressService: AddressService
     ) { }
 
-    public async employeeLogin ( name: string, password: string ) {
+    public async employeeLogin(name: string, password: string) {
         const employeeDetails = 
             await this.employeeRepo.getEmployeeByName(name);
         if (!employeeDetails) {
