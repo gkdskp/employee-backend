@@ -34,9 +34,12 @@ export class Employee extends AbstractEntity {
     @JoinColumn()
     public department: Department;
 
-    @OneToOne(() => Address, { cascade: true, nullable: true })
-    @JoinColumn()
-    address: Address;
+    // @OneToOne(() => Address, { cascade: true, nullable: true })
+    // @JoinColumn()
+    // address: Address;
+
+    @Column({ nullable: true })
+    public address: string;
 
     @Column({ nullable: true })
     idProofPath: string;
