@@ -8,6 +8,6 @@ export enum EmployeeRole {
 
 export enum Status {
     Active = "Active",
-    Trainee = "Trainee",
-    InActive = "InActive"
+    Trainee = "Probation",
+    InActive = "Inactive"
 }

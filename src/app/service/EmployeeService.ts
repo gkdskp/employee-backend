@@ -20,10 +20,7 @@ export class EmployeeService {
         private addressService: AddressService
     ) { }
 
-    public employeeLogin = async (
-        name: string,
-        password: string
-    ) => {
+    public async employeeLogin ( name: string, password: string ) {
         const employeeDetails = 
             await this.employeeRepo.getEmployeeByName(name);
         if (!employeeDetails) {
@@ -49,7 +46,7 @@ export class EmployeeService {
         }
     };
 
-    private generateAuthTokens = (payload: any) => {
+    private generateAuthTokens(payload: any) {
         return jsonwebtoken.sign(payload, process.env.JWT_TOKEN_SECRET, {
             expiresIn: process.env.ID_TOKEN_VALIDITY,
         });
@@ -61,7 +58,9 @@ export class EmployeeService {
     }
 
     async addEmployee(data: EmployeeWithAddressDto) {
+        console.log(data);
         const employee = await this.employeeRepo.getEmployeeById(data.id);
+
 
         if (employee) {
             throw new EntityAlreadyExists(ErrorCodes.USER_ALREADY_EXISTS);

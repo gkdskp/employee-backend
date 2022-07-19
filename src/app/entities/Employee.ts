@@ -30,17 +30,17 @@ export class Employee extends AbstractEntity {
     @Column({ nullable: false })
     public experience: Number;
 
-    @ManyToOne(() => Department, { cascade: true })
+    @ManyToOne(() => Department, { cascade: true, nullable: true })
     @JoinColumn()
     public department: Department;
 
-    @OneToOne(() => Address, { cascade: true })
+    @OneToOne(() => Address, { cascade: true, nullable: true })
     @JoinColumn()
     address: Address;
 
     @Column({ nullable: true })
     idProofPath: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     public departmentId: string;
 }

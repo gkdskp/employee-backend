@@ -24,26 +24,26 @@ class EmployeeController extends AbstractController {
 
     this.router.get(
       `${this.path}`,
-      authorize(),
+      // authorize(),
       this.asyncRouteHandler(this.getAllEmployees)
     );
 
     this.router.get(
       `${this.path}/:id`,
-      authorize(),
+      // authorize(),
       this.asyncRouteHandler(this.getEmployeeById)
     );
 
     this.router.post(
       `${this.path}`,
-      authorize([EmployeeRole.Admin, EmployeeRole.HR]),
-      validationMiddleware(EmployeeWithAddressDto, APP_CONSTANTS.body),
+      // authorize([EmployeeRole.Admin, EmployeeRole.HR]),
+      // validationMiddleware(EmployeeWithAddressDto, APP_CONSTANTS.body),
       this.asyncRouteHandler(this.addEmployee)
     );
 
     this.router.delete(
       `${this.path}/:id`,
-      authorize([EmployeeRole.Admin, EmployeeRole.HR]),
+      // authorize([EmployeeRole.Admin, EmployeeRole.HR]),
       this.asyncRouteHandler(this.deleteEmployee)
     );
 
@@ -56,8 +56,8 @@ class EmployeeController extends AbstractController {
 
     this.router.put(
       `${this.path}/:id`,
-      authorize([EmployeeRole.Admin, EmployeeRole.HR]),
-      validationMiddleware(EditEmployeeDto, APP_CONSTANTS.body, true),
+      // authorize([EmployeeRole.Admin, EmployeeRole.HR]),
+      // validationMiddleware(EditEmployeeDto, APP_CONSTANTS.body, true),
       this.asyncRouteHandler(this.updateEmployee)
     );
   }
@@ -114,6 +114,7 @@ class EmployeeController extends AbstractController {
     response: Response,
     next: NextFunction
   ) => {
+    console.log(request.body);
     const employee = await this.employeeService.addEmployee(request.body);
 
     response.status(200);
